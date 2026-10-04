@@ -60,6 +60,7 @@ def signals(
 class AnalyzeRequest(BaseModel):
     text: str = Field(..., min_length=20, examples=["Boeing halts 737 Max production after second fatal crash"])
     source: str = Field("news", pattern="^(news|social)$")
+    attention: float = Field(1.0, gt=0, le=50, description="Coverage volume relative to an ordinary day; a single text has no volume history.")
 
 
 @app.post("/analyze")
@@ -67,12 +68,12 @@ def analyze(req: AnalyzeRequest) -> list[dict]:
     """Score one piece of text on demand; returns one signal per company (or the market) it concerns."""
     from datetime import datetime, timezone
 
-    from riskengine.engine import RiskEngine
+    from riskengine.engine import FixedAttention, RiskEngine
 
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     shared = _engine()
     # Reuse the loaded models but not the stream state: ad-hoc requests must not count as market attention.
-    engine = RiskEngine(shared.scorer, shared.impact)
+    engine = RiskEngine(shared.scorer, shared.impact, FixedAttention(req.attention))
     out = engine.process([Document(doc_id(req.source, ts, req.text), ts, req.source, "api", req.text)])
     if not out:
         raise HTTPException(422, "Text does not mention a covered company or a market-wide topic.")

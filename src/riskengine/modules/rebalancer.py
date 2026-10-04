@@ -160,6 +160,8 @@ def run(signals: pd.DataFrame, prices: pd.DataFrame, cfg: RebalanceConfig = Reba
     spy = prices[BENCHMARK].pct_change().reindex(days).fillna(0.0)
 
     ic = information_coefficient(state, prices)
+    # Same-day check: does a day's raw sentiment line up with that day's return? (descriptive, not tradable)
+    same_day = daily.corrwith(prices[list(INDEX_TICKERS)].pct_change().reindex(days), axis=1, method="spearman").dropna()
     metrics = {
         "sentiment_tilted": {**performance(strategy["ret"], equal), "avg_daily_turnover": float(strategy["turnover"].mean())},
         "naive_rebalancer": {**performance(naive["ret"], equal), "avg_daily_turnover": float(naive["turnover"].mean())},
@@ -169,6 +171,8 @@ def run(signals: pd.DataFrame, prices: pd.DataFrame, cfg: RebalanceConfig = Reba
             "mean_ic": float(ic.mean()),
             "ic_t_stat": float(ic.mean() / ic.std() * np.sqrt(len(ic))) if len(ic) > 1 else 0.0,
             "ic_hit_rate": float((ic > 0).mean()),
+            "same_day_ic": float(same_day.mean()),
+            "same_day_ic_t_stat": float(same_day.mean() / same_day.std() * np.sqrt(len(same_day))) if len(same_day) > 1 else 0.0,
         },
     }
     return RebalanceResult(daily, state, targets, strategy, naive, equal, spy, metrics)

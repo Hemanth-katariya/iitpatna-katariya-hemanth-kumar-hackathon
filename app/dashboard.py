@@ -200,14 +200,19 @@ def page_analyze() -> None:
     ]
     choice = st.selectbox("Example", examples)
     text = st.text_area("Text to analyse", choice, height=90)
-    source = st.radio("Treat as", ["news", "social"], horizontal=True)
+    c1, c2 = st.columns([1, 2])
+    source = c1.radio("Treat as", ["news", "social"], horizontal=True)
+    attention = c2.select_slider(
+        "How widely is the story being covered?", options=[1.0, 2.0, 3.0, 5.0, 10.0, 20.0], value=1.0, format_func=lambda v: "an ordinary day" if v == 1 else f"{v:.0f}x the usual volume",
+        help="One text has no volume history. In the feed, attention is measured from the stream; here you set it. It is the largest driver of impact.",
+    )  # fmt: skip
     if not st.button("Analyse", type="primary"):
         return
-    from riskengine.engine import RiskEngine
+    from riskengine.engine import FixedAttention, RiskEngine
     from riskengine.schema import Document
 
     shared = models()
-    engine = RiskEngine(shared.scorer, shared.impact)
+    engine = RiskEngine(shared.scorer, shared.impact, FixedAttention(attention))
     out = engine.process([Document("adhoc", pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%dT%H:%M:%SZ"), source, "manual input", text)])
     if not out:
         st.warning("This text does not mention a covered company or a market-wide topic, so the engine emits no signal for it.")
@@ -323,8 +328,9 @@ def page_rebalancer(sig: pd.DataFrame) -> None:
         st.caption("Naive rule: weights follow raw same-day sentiment with no smoothing or limits.")
         q = m["signal_quality"]
         st.markdown(
-            f"**Does sentiment predict returns?** Daily rank correlation between a stock's sentiment and the return it goes on to earn: "
-            f"**{q['mean_ic']:+.3f}** on average (t-stat {q['ic_t_stat']:.2f}, positive on {q['ic_hit_rate']:.0%} of days)."
+            f"**Does sentiment predict returns?** Not in this sample. A day's sentiment lines up with that same day's return "
+            f"(rank correlation **{q['same_day_ic']:+.2f}**, t-stat {q['same_day_ic_t_stat']:.1f}), but against the return it can actually be traded into "
+            f"the correlation is **{q['mean_ic']:+.3f}** (t-stat {q['ic_t_stat']:.2f}). Sentiment here describes moves; it does not forecast them."
         )
         st.caption(
             f"Backtest over {len(held)} trading days. Sentiment seen on day t is traded at the close of t+1 and earns from t+2, "
@@ -515,11 +521,15 @@ def main() -> None:
         st.header("Data feed")
         feed = st.radio("Feed", ["Replay", "Live"], label_visibility="collapsed", captions=["Jan-Jul 2020 news and tweets", "Google News, Yahoo Finance, StockTwits"])
         if feed == "Live" and st.button("Fetch live data now"):
+            from riskengine.engine import FixedAttention, RiskEngine
             from riskengine.ingestion import fetch_all, live_sources
 
-            with st.spinner("Pulling live feeds and scoring..."):
+            with st.spinner("Pulling live feeds and scoring (a few minutes on CPU)..."):
                 docs = fetch_all(live_sources())
-                n = SignalStore(LIVE_DB_PATH).write(models().process(docs))
+                shared = models()
+                store = SignalStore(LIVE_DB_PATH)
+                store.clear()
+                n = store.write(RiskEngine(shared.scorer, shared.impact, FixedAttention()).process(docs))
             st.success(f"{len(docs):,} documents fetched, {n:,} new signals.")
         sig = signals_for(feed)
         if sig.empty:

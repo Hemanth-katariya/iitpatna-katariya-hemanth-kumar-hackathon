@@ -68,12 +68,27 @@ class AttentionTracker:
         return ratios
 
 
+class FixedAttention:
+    """Attention set by hand, for input that has no volume history.
+
+    A one-off poll of a live feed returns its most recent items, so the newest day always looks
+    busiest; volume only means something once the same feed has been polled over consecutive
+    days. Snapshots and ad-hoc text therefore use a fixed ratio (1.0 = an ordinary day).
+    """
+
+    def __init__(self, ratio: float = 1.0):
+        self.ratio = ratio
+
+    def update(self, counts: dict[tuple[str, str], float]) -> dict[tuple[str, str], float]:
+        return dict.fromkeys(counts, self.ratio)
+
+
 class RiskEngine:
     def __init__(
         self,
         scorer: TextScorer | None = None,
         impact: ImpactModel | None = None,
-        attention: AttentionTracker | None = None,
+        attention: AttentionTracker | FixedAttention | None = None,
     ):
         self.scorer = scorer or TextScorer()
         self.impact = impact or ImpactModel.load()

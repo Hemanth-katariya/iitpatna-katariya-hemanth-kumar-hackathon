@@ -41,12 +41,13 @@ def replay(start: str, end: str, export: bool) -> None:
 
 
 def live() -> None:
-    from riskengine.engine import RiskEngine
+    from riskengine.engine import FixedAttention, RiskEngine
 
     docs = fetch_all(live_sources())
     print(f"fetched {len(docs):,} live documents: {dict(Counter(d.source for d in docs))}")
-    signals = RiskEngine().process(docs)
+    signals = RiskEngine(attention=FixedAttention()).process(docs)
     store = SignalStore(LIVE_DB_PATH)
+    store.clear()  # each run is a fresh snapshot of the feeds
     store.write(signals)
     print(f"wrote {len(signals):,} signals to {LIVE_DB_PATH.name} (store now holds {store.count():,})")
     for s in sorted(signals, key=lambda s: -s.impact)[:8]:
