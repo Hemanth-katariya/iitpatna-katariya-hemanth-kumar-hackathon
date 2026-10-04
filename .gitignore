@@ -8,7 +8,7 @@ __pycache__/
 # Raw third-party downloads are fetched by scripts/download_data.py, not committed
 data/raw/
 # Runtime signal store is rebuilt by the pipeline
-data/signals.db
+data/*.db
 
 # Hackathon brief PDFs are not ours to redistribute
 /*.pdf

@@ -3,8 +3,9 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterable
+from typing import Iterable, Iterator
 
 import pandas as pd
 
@@ -35,14 +36,35 @@ class SignalStore:
         with self._connect() as con:
             con.executescript(_SCHEMA)
 
-    def _connect(self) -> sqlite3.Connection:
-        return sqlite3.connect(self.path)
+    @contextmanager
+    def _connect(self) -> Iterator[sqlite3.Connection]:
+        con = sqlite3.connect(self.path)
+        try:
+            with con:  # commits on success, rolls back on error
+                yield con
+        finally:
+            con.close()
 
-    def write(self, signals: Iterable[Signal]) -> int:
-        rows = [tuple(json.dumps(v) if k == "drivers" else v for k, v in s.to_dict().items()) for s in signals]
+    def _insert(self, rows: list[tuple]) -> int:
         with self._connect() as con:
             con.executemany(f"INSERT OR REPLACE INTO signals VALUES ({','.join('?' * len(_COLUMNS))})", rows)
         return len(rows)
+
+    def write(self, signals: Iterable[Signal]) -> int:
+        return self._insert(
+            [tuple(json.dumps(v) if k == "drivers" else v for k, v in s.to_dict().items()) for s in signals]
+        )
+
+    def export_csv(self, path: Path | str) -> int:
+        """Write every signal to a (gzip) CSV: the file-based output for downstream consumers."""
+        df = self.query()
+        df["drivers"] = df["drivers"].map(json.dumps)
+        df.to_csv(path, index=False)
+        return len(df)
+
+    def import_csv(self, path: Path | str) -> int:
+        df = pd.read_csv(path, keep_default_na=False)
+        return self._insert(list(df[list(_COLUMNS)].itertuples(index=False, name=None)))
 
     def clear(self) -> None:
         with self._connect() as con:

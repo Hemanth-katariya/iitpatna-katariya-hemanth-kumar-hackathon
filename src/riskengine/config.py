@@ -8,7 +8,9 @@ ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
 RAW = DATA / "raw"
 MODELS = ROOT / "models"
-DB_PATH = DATA / "signals.db"
+DB_PATH = DATA / "signals.db"  # replay signals
+LIVE_DB_PATH = DATA / "live_signals.db"  # signals from the live feeds
+SIGNALS_EXPORT = DATA / "signals.csv.gz"  # committed engine output for the replay window
 
 MARKET = "MARKET"  # pseudo-ticker for macro / market-wide documents
 BENCHMARK = "SPY"
