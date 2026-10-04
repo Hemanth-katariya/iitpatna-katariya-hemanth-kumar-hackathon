@@ -6,9 +6,8 @@ from typing import Iterable
 
 from riskengine.config import BY_TICKER, MARKET
 from riskengine.nlp.entities import link
-from riskengine.nlp.events import EventClassifier
 from riskengine.nlp.impact import ImpactModel
-from riskengine.nlp.sentiment import FinBertSentiment
+from riskengine.nlp.scoring import TextScorer
 from riskengine.nlp.text import clean, dedup_key, is_boilerplate
 from riskengine.schema import Document, Signal
 
@@ -49,13 +48,11 @@ class AttentionTracker:
 class RiskEngine:
     def __init__(
         self,
-        sentiment: FinBertSentiment | None = None,
-        events: EventClassifier | None = None,
+        scorer: TextScorer | None = None,
         impact: ImpactModel | None = None,
         attention: AttentionTracker | None = None,
     ):
-        self.sentiment = sentiment or FinBertSentiment()
-        self.events = events or EventClassifier()
+        self.scorer = scorer or TextScorer()
         self.impact = impact or ImpactModel.load()
         self.attention = attention or AttentionTracker()
         self._seen: set[str] = set()
@@ -80,9 +77,7 @@ class RiskEngine:
         return signals
 
     def _process_day(self, items: list[tuple[Document, str, list[str]]]) -> list[Signal]:
-        texts = [text for _, text, _ in items]
-        sentiments = self.sentiment.score(texts)
-        events = self.events.classify(texts)
+        scores = self.scorer.score([text for _, text, _ in items])
 
         counts: dict[tuple[str, str], float] = defaultdict(float)
         for doc, _, tickers in items:
@@ -91,7 +86,7 @@ class RiskEngine:
         attention = self.attention.update(dict(counts))
 
         out = []
-        for (doc, text, tickers), s, e in zip(items, sentiments, events):
+        for (doc, text, tickers), (s, e) in zip(items, scores):
             for t in tickers:
                 att = attention[(t, doc.source)]
                 impact, drivers = self.impact.score(t, e.label, s.score, att, doc.source)

@@ -20,11 +20,10 @@ from sklearn.linear_model import Ridge
 from riskengine.config import EVENT_TYPES, MARKET, RAW, ROOT
 from riskengine.engine import AttentionTracker
 from riskengine.market import event_day, load_prices, sigma_moves
-from riskengine.nlp.events import EventClassifier
 from riskengine.nlp.impact import SCORE_QUANTILES, ImpactModel, ScopeModel, log_attention
-from riskengine.nlp.sentiment import FinBertSentiment
+from riskengine.nlp.scoring import TextScorer
+from riskengine.nlp.text import clean
 
-SCORED = RAW / "calibration_scored.parquet"
 TEST_START = "2019-01-01"
 TARGET_CLIP = 6.0
 REFERENCE_EVENT = "Market Commentary"
@@ -32,20 +31,15 @@ BIG_MOVE = 2.0  # a two-sigma abnormal move
 
 
 def score_headlines() -> pd.DataFrame:
-    """Run the NLP models over the calibration headlines (cached: this is the slow step on CPU)."""
-    if SCORED.exists():
-        return pd.read_parquet(SCORED)
+    """Run the NLP models over the calibration headlines.
+
+    This is the slow step on CPU; run `scripts/prescore.py calibration i/n` first to fill the cache in parallel.
+    """
     df = pd.read_csv(RAW / "calibration_news.csv")
-    texts = df["text"].tolist()
-    sentiment, events = FinBertSentiment(), EventClassifier()
-    sent, evt = [], []
-    for i in range(0, len(texts), 2048):
-        chunk = texts[i : i + 2048]
-        sent.extend(s.score for s in sentiment.score(chunk))
-        evt.extend(e.label for e in events.classify(chunk))
-        print(f"scored {min(i + 2048, len(texts)):,}/{len(texts):,}", flush=True)
-    df["sentiment"], df["event_type"], df["source"] = sent, evt, "news"
-    df.to_parquet(SCORED, index=False)
+    scores = TextScorer().score(df["text"].map(clean).tolist())
+    df["sentiment"] = [s.score for s, _ in scores]
+    df["event_type"] = [e.label for _, e in scores]
+    df["source"] = "news"
     return df
 
 

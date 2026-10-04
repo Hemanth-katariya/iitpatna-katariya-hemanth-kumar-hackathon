@@ -72,7 +72,7 @@ def analyze(req: AnalyzeRequest) -> list[dict]:
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     shared = _engine()
     # Reuse the loaded models but not the stream state: ad-hoc requests must not count as market attention.
-    engine = RiskEngine(shared.sentiment, shared.events, shared.impact)
+    engine = RiskEngine(shared.scorer, shared.impact)
     out = engine.process([Document(doc_id(req.source, ts, req.text), ts, req.source, "api", req.text)])
     if not out:
         raise HTTPException(422, "Text does not mention a covered company or a market-wide topic.")

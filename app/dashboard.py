@@ -205,7 +205,7 @@ def page_analyze() -> None:
     from riskengine.schema import Document
 
     shared = models()
-    engine = RiskEngine(shared.sentiment, shared.events, shared.impact)
+    engine = RiskEngine(shared.scorer, shared.impact)
     out = engine.process([Document("adhoc", pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%dT%H:%M:%SZ"), source, "manual input", text)])
     if not out:
         st.warning("This text does not mention a covered company or a market-wide topic, so the engine emits no signal for it.")
