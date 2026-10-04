@@ -143,6 +143,4 @@ Credit spreads are the largest loss driver in both (-$118m and -$98m), partly of
 
 **Next steps:** a time-stamped newswire or GDELT event feed for the market scope; aspect-level sentiment per company; a persistent live poller so attention is measured on live data; rating-migration and correlated shocks in the stress engine.
 
-## AI usage
 
-This project was built with AI coding assistance (Claude Code), used for implementation, testing and review. All design decisions, results and limitations stated here were checked against the code and its outputs.
