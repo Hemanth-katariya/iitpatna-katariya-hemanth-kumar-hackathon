@@ -1,8 +1,8 @@
 # AI/NLP Financial Risk Engine - S&P Global & Crisil Campus Hackathon
 
-**Candidate Name:** [Your Full Name]
-**College Email ID:** [your_id@college.ac.in]
-**College / Campus:** [Your College Name]
+**Candidate Name:** Katariya Hemanth Kumar
+**College Email ID:** hemanth_2301cs22@iitp.ac.in
+**College / Campus:** Indian Institute of Technology Patna
 **Demo Video Link:** [YouTube / Unlisted]
 **Slide Deck:** [docs/presentation.pdf](docs/presentation.pdf)
 
