@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.env
+.streamlit/secrets.toml
+
+# Raw third-party downloads are fetched by scripts/download_data.py, not committed
+data/raw/
+# Runtime signal store is rebuilt by the pipeline
+data/signals.db
+
+# Hackathon brief PDFs are not ours to redistribute
+/*.pdf
+*.egg-info/

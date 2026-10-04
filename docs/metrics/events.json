@@ -1,0 +1,97 @@
+{
+  "dataset": "zeroshot/twitter-financial-news-topic (validation split), remapped to 11 event types",
+  "n_train": 16362,
+  "n_valid": 3368,
+  "note": "Headline metrics exclude Credit Event, whose labels are regex-derived (weak supervision).",
+  "variants": {
+    "keyword_baseline": {
+      "accuracy": 0.5469,
+      "macro_f1": 0.5528,
+      "weighted_f1": 0.5325
+    },
+    "tfidf_logreg": {
+      "accuracy": 0.8471,
+      "macro_f1": 0.7567,
+      "weighted_f1": 0.8477
+    },
+    "embedding_logreg": {
+      "accuracy": 0.7619,
+      "macro_f1": 0.6743,
+      "weighted_f1": 0.7695
+    },
+    "embedding_plus_tfidf_logreg": {
+      "accuracy": 0.8587,
+      "macro_f1": 0.7703,
+      "weighted_f1": 0.86
+    }
+  },
+  "selected": "embedding_plus_tfidf_logreg",
+  "per_class": {
+    "Geopolitical": {
+      "precision": 0.8872,
+      "recall": 0.9105,
+      "f1-score": 0.8987,
+      "support": 190.0
+    },
+    "Macroeconomic": {
+      "precision": 0.8413,
+      "recall": 0.8344,
+      "f1-score": 0.8378,
+      "support": 483.0
+    },
+    "Credit Event": {
+      "precision": 0.9571,
+      "recall": 0.971,
+      "f1-score": 0.964,
+      "support": 276.0
+    },
+    "Merger/Acquisition": {
+      "precision": 0.7966,
+      "recall": 0.7705,
+      "f1-score": 0.7833,
+      "support": 122.0
+    },
+    "Product/Company News": {
+      "precision": 0.8482,
+      "recall": 0.8424,
+      "f1-score": 0.8453,
+      "support": 736.0
+    },
+    "Earnings": {
+      "precision": 0.9294,
+      "recall": 0.9466,
+      "f1-score": 0.9379,
+      "support": 487.0
+    },
+    "Analyst Rating": {
+      "precision": 0.7879,
+      "recall": 0.7536,
+      "f1-score": 0.7704,
+      "support": 69.0
+    },
+    "Legal/Regulatory": {
+      "precision": 0.8454,
+      "recall": 0.8542,
+      "f1-score": 0.8497,
+      "support": 96.0
+    },
+    "Management Change": {
+      "precision": 0.8704,
+      "recall": 0.9126,
+      "f1-score": 0.891,
+      "support": 103.0
+    },
+    "Commodity/Energy": {
+      "precision": 0.7426,
+      "recall": 0.8347,
+      "f1-score": 0.786,
+      "support": 121.0
+    },
+    "Market Commentary": {
+      "precision": 0.8657,
+      "recall": 0.845,
+      "f1-score": 0.8552,
+      "support": 961.0
+    }
+  }
+}

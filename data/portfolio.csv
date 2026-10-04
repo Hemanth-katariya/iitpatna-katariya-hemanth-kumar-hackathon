@@ -1,0 +1,155 @@
+position_id,asset_class,instrument,counterparty,sector,rating,grade,notional_usd,market_value_usd,maturity_years,rate_type,rate_dv01_usd,convexity,spread_cs01_usd,equity_delta_usd,fx_delta_usd,commodity_delta_usd,ead_usd,pd_1y,lgd
+P0001,Loan,Term Loan,Borrower 001,Industrials,BBB,IG,35345699.0,35325264.0,5.78,Floating,-707.0,0.0,0.0,0.0,0.0,0.0,35345699.0,0.0018,0.321
+P0002,Loan,Term Loan,Borrower 002,Industrials,BB,HY,25637764.0,25581051.0,2.752,Floating,-513.0,0.0,0.0,0.0,0.0,0.0,25637764.0,0.0065,0.34
+P0003,Loan,Term Loan,Borrower 003,Energy,B,HY,97090406.0,96033637.0,4.029,Floating,-1942.0,0.0,0.0,0.0,0.0,0.0,97090406.0,0.032,0.34
+P0004,Loan,Term Loan,Borrower 004,Energy,BB,HY,67268526.0,67058719.0,2.661,Floating,-1345.0,0.0,0.0,0.0,0.0,0.0,67268526.0,0.0065,0.48
+P0005,Loan,Term Loan,Borrower 005,Industrials,BBB,IG,132357213.0,132273405.0,2.812,Floating,-2647.0,0.0,0.0,0.0,0.0,0.0,132357213.0,0.0018,0.352
+P0006,Loan,Revolving Credit Facility,Borrower 006,Consumer Discretionary,BBB,IG,110624282.0,61215011.0,2.498,Floating,-1226.0,0.0,0.0,0.0,0.0,0.0,85957822.0,0.0018,0.493
+P0007,Loan,Term Loan,Borrower 007,Industrials,BBB,IG,83977329.0,83917507.0,2.326,Fixed,-16603.0,0.0,0.0,0.0,0.0,0.0,83977329.0,0.0018,0.396
+P0008,Loan,Term Loan,Borrower 008,Industrials,B,HY,51021057.0,50253696.0,4.265,Floating,-1020.0,0.0,0.0,0.0,0.0,0.0,51021057.0,0.032,0.47
+P0009,Loan,Revolving Credit Facility,Borrower 009,Utilities,BBB,IG,63120791.0,37074517.0,2.597,Floating,-742.0,0.0,0.0,0.0,0.0,0.0,50118812.0,0.0018,0.469
+P0010,Loan,Term Loan,Borrower 010,Real Estate,BBB,IG,190176588.0,190046182.0,6.065,Floating,-3804.0,0.0,0.0,0.0,0.0,0.0,190176588.0,0.0018,0.381
+P0011,Loan,Term Loan,Borrower 011,Information Technology,BBB,IG,21865692.0,21846717.0,5.395,Floating,-437.0,0.0,0.0,0.0,0.0,0.0,21865692.0,0.0018,0.482
+P0012,Loan,Revolving Credit Facility,Borrower 012,Information Technology,BBB,IG,58312790.0,26091216.0,2.162,Floating,-523.0,0.0,0.0,0.0,0.0,0.0,42219524.0,0.0018,0.461
+P0013,Loan,Term Loan,Borrower 013,Information Technology,BBB,IG,37221111.0,37190597.0,3.287,Floating,-744.0,0.0,0.0,0.0,0.0,0.0,37221111.0,0.0018,0.455
+P0014,Loan,Term Loan,Borrower 014,Industrials,B,HY,105235443.0,103876647.0,6.29,Floating,-2105.0,0.0,0.0,0.0,0.0,0.0,105235443.0,0.032,0.403
+P0015,Loan,Term Loan,Borrower 015,Real Estate,B,HY,117663135.0,116412566.0,6.403,Fixed,-64042.0,0.0,0.0,0.0,0.0,0.0,117663135.0,0.032,0.332
+P0016,Loan,Revolving Credit Facility,Borrower 016,Energy,A,IG,21828313.0,6572375.0,1.443,Floating,-132.0,0.0,0.0,0.0,0.0,0.0,14201910.0,0.0006,0.368
+P0017,Loan,Term Loan,Borrower 017,Information Technology,BBB,IG,104811616.0,104739224.0,3.713,Floating,-2096.0,0.0,0.0,0.0,0.0,0.0,104811616.0,0.0018,0.384
+P0018,Loan,Revolving Credit Facility,Borrower 018,Industrials,BBB,IG,46802787.0,14854866.0,1.862,Floating,-298.0,0.0,0.0,0.0,0.0,0.0,30840718.0,0.0018,0.428
+P0019,Loan,Term Loan,Borrower 019,Information Technology,BBB,IG,92296217.0,92234553.0,4.94,Floating,-1846.0,0.0,0.0,0.0,0.0,0.0,92296217.0,0.0018,0.371
+P0020,Loan,Term Loan,Borrower 020,Health Care,BBB,IG,96942703.0,96867775.0,4.396,Fixed,-36226.0,0.0,0.0,0.0,0.0,0.0,96942703.0,0.0018,0.429
+P0021,Loan,Term Loan,Borrower 021,Information Technology,BB,HY,159564327.0,159076640.0,2.274,Floating,-3191.0,0.0,0.0,0.0,0.0,0.0,159564327.0,0.0065,0.47
+P0022,Loan,Term Loan,Borrower 022,Energy,A,IG,54716473.0,54704848.0,5.806,Fixed,-27003.0,0.0,0.0,0.0,0.0,0.0,54716473.0,0.0006,0.354
+P0023,Loan,Term Loan,Borrower 023,Utilities,BB,HY,43426489.0,43318895.0,3.787,Floating,-869.0,0.0,0.0,0.0,0.0,0.0,43426489.0,0.0065,0.381
+P0024,Loan,Term Loan,Borrower 024,Materials,BBB,IG,82170016.0,82099480.0,2.861,Floating,-1643.0,0.0,0.0,0.0,0.0,0.0,82170016.0,0.0018,0.477
+P0025,Loan,Term Loan,Borrower 025,Consumer Discretionary,BB,HY,52514448.0,52357115.0,3.838,Floating,-1050.0,0.0,0.0,0.0,0.0,0.0,52514448.0,0.0065,0.461
+P0026,Loan,Revolving Credit Facility,Borrower 026,Financials,BB,HY,68054317.0,31095471.0,3.691,Floating,-624.0,0.0,0.0,0.0,0.0,0.0,49624482.0,0.0065,0.307
+P0027,Loan,Revolving Credit Facility,Borrower 027,Health Care,BB,HY,36652851.0,8117801.0,4.151,Floating,-163.0,0.0,0.0,0.0,0.0,0.0,22410880.0,0.0065,0.351
+P0028,Loan,Term Loan,Borrower 028,Materials,BB,HY,100010296.0,99730438.0,4.337,Floating,-2000.0,0.0,0.0,0.0,0.0,0.0,100010296.0,0.0065,0.431
+P0029,Loan,Revolving Credit Facility,Borrower 029,Industrials,BB,HY,32726170.0,8005718.0,2.573,Floating,-161.0,0.0,0.0,0.0,0.0,0.0,20387574.0,0.0065,0.326
+P0030,Loan,Term Loan,Borrower 030,Energy,BB,HY,24742738.0,24671538.0,5.729,Floating,-495.0,0.0,0.0,0.0,0.0,0.0,24742738.0,0.0065,0.443
+P0031,Loan,Term Loan,Borrower 031,Health Care,A,IG,159124749.0,159093075.0,5.85,Floating,-3182.0,0.0,0.0,0.0,0.0,0.0,159124749.0,0.0006,0.332
+P0032,Loan,Term Loan,Borrower 032,Consumer Discretionary,B,HY,35093447.0,34745596.0,6.694,Floating,-702.0,0.0,0.0,0.0,0.0,0.0,35093447.0,0.032,0.31
+P0033,Loan,Term Loan,Borrower 033,Financials,BBB,IG,43526526.0,43489204.0,2.499,Floating,-871.0,0.0,0.0,0.0,0.0,0.0,43526526.0,0.0018,0.476
+P0034,Loan,Term Loan,Borrower 034,Information Technology,A,IG,20507560.0,20502712.0,2.324,Floating,-410.0,0.0,0.0,0.0,0.0,0.0,20507560.0,0.0006,0.394
+P0035,Loan,Term Loan,Borrower 035,Industrials,B,HY,119210871.0,117581207.0,6.174,Floating,-2384.0,0.0,0.0,0.0,0.0,0.0,119210871.0,0.032,0.427
+P0036,Loan,Revolving Credit Facility,Borrower 036,Industrials,BBB,IG,49394336.0,16211464.0,3.302,Floating,-325.0,0.0,0.0,0.0,0.0,0.0,32813463.0,0.0018,0.358
+P0037,Loan,Term Loan,Borrower 037,Health Care,BB,HY,22728281.0,22678492.0,4.548,Floating,-455.0,0.0,0.0,0.0,0.0,0.0,22728281.0,0.0065,0.337
+P0038,Loan,Term Loan,Borrower 038,Communication Services,BB,HY,9613999.0,9588666.0,4.307,Floating,-192.0,0.0,0.0,0.0,0.0,0.0,9613999.0,0.0065,0.405
+P0039,Loan,Revolving Credit Facility,Borrower 039,Communication Services,B,HY,44195475.0,14639094.0,4.526,Floating,-301.0,0.0,0.0,0.0,0.0,0.0,29632401.0,0.032,0.454
+P0040,Loan,Revolving Credit Facility,Borrower 040,Industrials,A,IG,78153674.0,42798111.0,2.996,Floating,-856.0,0.0,0.0,0.0,0.0,0.0,60482430.0,0.0006,0.36
+P0041,Loan,Term Loan,Borrower 041,Energy,BBB,IG,287366715.0,287132077.0,5.077,Floating,-5747.0,0.0,0.0,0.0,0.0,0.0,287366715.0,0.0018,0.454
+P0042,Loan,Term Loan,Borrower 042,Energy,BB,HY,79616322.0,79420485.0,2.255,Fixed,-15259.0,0.0,0.0,0.0,0.0,0.0,79616322.0,0.0065,0.378
+P0043,Loan,Term Loan,Borrower 043,Financials,BB,HY,35112836.0,35030307.0,3.1,Floating,-702.0,0.0,0.0,0.0,0.0,0.0,35112836.0,0.0065,0.362
+P0044,Loan,Term Loan,Borrower 044,Financials,A,IG,60825384.0,60809332.0,6.632,Floating,-1217.0,0.0,0.0,0.0,0.0,0.0,60825384.0,0.0006,0.44
+P0045,Loan,Term Loan,Borrower 045,Real Estate,A,IG,46367390.0,46356616.0,2.243,Fixed,-8842.0,0.0,0.0,0.0,0.0,0.0,46367390.0,0.0006,0.387
+P0046,Loan,Term Loan,Borrower 046,Industrials,BB,HY,110438817.0,110153961.0,5.589,Floating,-2209.0,0.0,0.0,0.0,0.0,0.0,110438817.0,0.0065,0.397
+P0047,Loan,Term Loan,Borrower 047,Industrials,BB,HY,85786944.0,85587380.0,2.335,Fixed,-17030.0,0.0,0.0,0.0,0.0,0.0,85786944.0,0.0065,0.358
+P0048,Loan,Term Loan,Borrower 048,Consumer Discretionary,BB,HY,86720764.0,86517722.0,5.255,Floating,-1734.0,0.0,0.0,0.0,0.0,0.0,86720764.0,0.0065,0.36
+P0049,Loan,Revolving Credit Facility,Borrower 049,Health Care,A,IG,197092510.0,62652978.0,3.258,Floating,-1254.0,0.0,0.0,0.0,0.0,0.0,129890050.0,0.0006,0.444
+P0050,Loan,Revolving Credit Facility,Borrower 050,Financials,B,HY,45113339.0,17997745.0,1.862,Floating,-368.0,0.0,0.0,0.0,0.0,0.0,31759768.0,0.032,0.402
+P0051,Loan,Term Loan,Borrower 051,Information Technology,A,IG,108278925.0,108257461.0,4.394,Floating,-2166.0,0.0,0.0,0.0,0.0,0.0,108278925.0,0.0006,0.33
+P0052,Loan,Term Loan,Borrower 052,Information Technology,BBB,IG,104513301.0,104432702.0,6.61,Fixed,-58718.0,0.0,0.0,0.0,0.0,0.0,104513301.0,0.0018,0.428
+P0053,Loan,Revolving Credit Facility,Borrower 053,Information Technology,BB,HY,20900170.0,11937285.0,4.561,Floating,-240.0,0.0,0.0,0.0,0.0,0.0,16441381.0,0.0065,0.424
+P0054,Loan,Term Loan,Borrower 054,Industrials,CCC,HY,36859110.0,33415102.0,5.843,Floating,-737.0,0.0,0.0,0.0,0.0,0.0,36859110.0,0.25,0.374
+P0055,Loan,Term Loan,Borrower 055,Information Technology,BBB,IG,26989230.0,26971710.0,2.67,Floating,-540.0,0.0,0.0,0.0,0.0,0.0,26989230.0,0.0018,0.361
+P0056,Loan,Revolving Credit Facility,Borrower 056,Information Technology,A,IG,107530686.0,51731207.0,1.537,Floating,-1035.0,0.0,0.0,0.0,0.0,0.0,79640947.0,0.0006,0.419
+P0057,Loan,Term Loan,Borrower 057,Industrials,B,HY,26625588.0,26227678.0,3.132,Fixed,-7089.0,0.0,0.0,0.0,0.0,0.0,26625588.0,0.032,0.467
+P0058,Loan,Term Loan,Borrower 058,Financials,BB,HY,195423996.0,195036810.0,6.986,Fixed,-116044.0,0.0,0.0,0.0,0.0,0.0,195423996.0,0.0065,0.305
+P0059,Loan,Term Loan,Borrower 059,Information Technology,B,HY,79148585.0,78324378.0,2.649,Floating,-1583.0,0.0,0.0,0.0,0.0,0.0,79148585.0,0.032,0.325
+P0060,Loan,Term Loan,Borrower 060,Energy,B,HY,30669782.0,30273128.0,5.15,Floating,-613.0,0.0,0.0,0.0,0.0,0.0,30669782.0,0.032,0.404
+P0061,Loan,Revolving Credit Facility,Borrower 061,Consumer Discretionary,BBB,IG,62025493.0,19241090.0,3.123,Floating,-385.0,0.0,0.0,0.0,0.0,0.0,40648665.0,0.0018,0.42
+P0062,Loan,Term Loan,Borrower 062,Materials,BB,HY,40471883.0,40375386.0,3.621,Fixed,-12456.0,0.0,0.0,0.0,0.0,0.0,40471883.0,0.0065,0.367
+P0063,Loan,Term Loan,Borrower 063,Health Care,BBB,IG,201292954.0,201154840.0,6.342,Fixed,-108505.0,0.0,0.0,0.0,0.0,0.0,201292954.0,0.0018,0.381
+P0064,Loan,Term Loan,Borrower 064,Financials,B,HY,50766373.0,50025777.0,6.418,Floating,-1015.0,0.0,0.0,0.0,0.0,0.0,50766373.0,0.032,0.456
+P0065,Loan,Term Loan,Borrower 065,Industrials,BBB,IG,34414547.0,34390989.0,5.054,Floating,-688.0,0.0,0.0,0.0,0.0,0.0,34414547.0,0.0018,0.38
+P0066,Loan,Revolving Credit Facility,Borrower 066,Energy,BBB,IG,42832068.0,24384384.0,4.849,Floating,-488.0,0.0,0.0,0.0,0.0,0.0,33622183.0,0.0018,0.461
+P0067,Loan,Term Loan,Borrower 067,Utilities,BBB,IG,9433819.0,9427953.0,6.892,Floating,-189.0,0.0,0.0,0.0,0.0,0.0,9433819.0,0.0018,0.345
+P0068,Loan,Term Loan,Borrower 068,Information Technology,BB,HY,48239259.0,48117784.0,3.291,Fixed,-13496.0,0.0,0.0,0.0,0.0,0.0,48239259.0,0.0065,0.387
+P0069,Loan,Term Loan,Borrower 069,Materials,BB,HY,22023157.0,21973833.0,6.524,Floating,-440.0,0.0,0.0,0.0,0.0,0.0,22023157.0,0.0065,0.345
+P0070,Loan,Term Loan,Borrower 070,Utilities,A,IG,26885380.0,26878949.0,5.976,Fixed,-13657.0,0.0,0.0,0.0,0.0,0.0,26885380.0,0.0006,0.399
+P0071,Loan,Revolving Credit Facility,Borrower 071,Health Care,BB,HY,39954599.0,8416642.0,3.448,Floating,-169.0,0.0,0.0,0.0,0.0,0.0,24212324.0,0.0065,0.339
+P0072,Loan,Term Loan,Borrower 072,Financials,BBB,IG,26189961.0,26175203.0,6.586,Fixed,-14661.0,0.0,0.0,0.0,0.0,0.0,26189961.0,0.0018,0.313
+P0073,Loan,Revolving Credit Facility,Borrower 073,Materials,BB,HY,86124374.0,24479070.0,2.522,Floating,-492.0,0.0,0.0,0.0,0.0,0.0,55357396.0,0.0065,0.309
+P0074,Loan,Revolving Credit Facility,Borrower 074,Utilities,CCC,HY,181016259.0,66463733.0,3.992,Floating,-1608.0,0.0,0.0,0.0,0.0,0.0,130712995.0,0.25,0.427
+P0075,Loan,Revolving Credit Facility,Borrower 075,Communication Services,BB,HY,14743227.0,6979778.0,1.552,Floating,-140.0,0.0,0.0,0.0,0.0,0.0,10875936.0,0.0065,0.408
+P0076,Loan,Revolving Credit Facility,Borrower 076,Industrials,BB,HY,68760008.0,31203628.0,4.5,Floating,-627.0,0.0,0.0,0.0,0.0,0.0,50053000.0,0.0065,0.438
+P0077,Loan,Term Loan,Borrower 077,Financials,BB,HY,63947440.0,63751145.0,3.459,Floating,-1279.0,0.0,0.0,0.0,0.0,0.0,63947440.0,0.0065,0.472
+P0078,Loan,Revolving Credit Facility,Borrower 078,Industrials,BBB,IG,61243797.0,31067159.0,3.423,Floating,-622.0,0.0,0.0,0.0,0.0,0.0,46171937.0,0.0018,0.396
+P0079,Loan,Revolving Credit Facility,Borrower 079,Energy,BBB,IG,88451702.0,45251285.0,3.734,Floating,-906.0,0.0,0.0,0.0,0.0,0.0,66881572.0,0.0018,0.5
+P0080,Loan,Term Loan,Borrower 080,Health Care,BB,HY,12867065.0,12836652.0,6.449,Floating,-257.0,0.0,0.0,0.0,0.0,0.0,12867065.0,0.0065,0.364
+P0081,Bond,Corporate Bond,Issuer 001,Consumer Staples,A,IG,76211832.0,74278424.0,5.276,Fixed,-33648.0,25.051,-33648.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0082,Bond,Corporate Bond,Issuer 002,Real Estate,BB,HY,54899223.0,54327613.0,9.575,Fixed,-40104.0,61.874,-40104.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0083,Bond,Corporate Bond,Issuer 003,Utilities,A,IG,19604167.0,19566182.0,3.235,Fixed,-5747.0,11.565,-5747.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0084,Bond,Corporate Bond,Issuer 004,Information Technology,A,IG,36658785.0,36811003.0,5.211,Fixed,-16497.0,24.564,-16497.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0085,Bond,Corporate Bond,Issuer 005,Financials,BBB,IG,49178370.0,49007829.0,11.638,Fixed,-41935.0,81.775,-41935.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0086,Bond,Corporate Bond,Issuer 006,Energy,BBB,IG,13566117.0,13582491.0,2.162,Fixed,-2750.0,6.124,-2750.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0087,Bond,Corporate Bond,Issuer 007,Health Care,B,HY,24591415.0,25470275.0,7.581,Fixed,-15623.0,43.757,-15623.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0088,Bond,Corporate Bond,Issuer 008,Real Estate,A,IG,115191182.0,118264258.0,10.888,Fixed,-96298.0,74.445,-96298.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0089,Bond,Corporate Bond,Issuer 009,Consumer Staples,BBB,IG,19470301.0,18335941.0,8.155,Fixed,-11929.0,48.829,-11929.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0090,Bond,Corporate Bond,Issuer 010,Information Technology,BBB,IG,12317509.0,11864317.0,7.151,Fixed,-6939.0,40.06,-6939.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0091,Bond,Corporate Bond,Issuer 011,Information Technology,A,IG,22254407.0,23052681.0,3.935,Fixed,-8076.0,15.777,-8076.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0092,Bond,Corporate Bond,Issuer 012,Utilities,A,IG,62276237.0,61327148.0,6.956,Fixed,-35061.0,38.401,-35061.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0093,Bond,Corporate Bond,Issuer 013,Consumer Discretionary,A,IG,62791594.0,60006190.0,10.164,Fixed,-46378.0,67.465,-46378.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0094,Bond,Corporate Bond,Issuer 014,Utilities,B,HY,27826156.0,28279982.0,10.187,Fixed,-21894.0,67.677,-21894.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0095,Bond,Corporate Bond,Issuer 015,Financials,B,HY,30179855.0,28405043.0,3.815,Fixed,-9681.0,15.025,-9681.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0096,Bond,Corporate Bond,Issuer 016,Financials,BBB,IG,29676944.0,29530653.0,7.633,Fixed,-18214.0,44.21,-18214.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0097,Bond,Corporate Bond,Issuer 017,Energy,A,IG,34474412.0,33232989.0,4.172,Fixed,-12264.0,17.309,-12264.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0098,Bond,Corporate Bond,Issuer 018,Materials,AA,IG,80236210.0,78995421.0,6.143,Fixed,-40725.0,31.733,-40725.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0099,Bond,Corporate Bond,Issuer 019,Financials,A,IG,20841065.0,19925939.0,3.621,Fixed,-6481.0,13.832,-6481.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0100,Bond,Corporate Bond,Issuer 020,Consumer Discretionary,AA,IG,47282196.0,48058415.0,7.161,Fixed,-28142.0,40.145,-28142.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0101,Bond,Corporate Bond,Issuer 021,Information Technology,BB,HY,35309597.0,33943452.0,6.159,Fixed,-17539.0,31.865,-17539.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0102,Bond,Corporate Bond,Issuer 022,Financials,A,IG,66968277.0,67369800.0,11.222,Fixed,-56109.0,77.693,-56109.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0103,Bond,Corporate Bond,Issuer 023,Energy,BB,HY,66916257.0,67054294.0,8.831,Fixed,-46467.0,54.952,-46467.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0104,Bond,Corporate Bond,Issuer 024,Communication Services,BBB,IG,66957571.0,64014300.0,9.403,Fixed,-46596.0,60.262,-46596.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0105,Bond,Corporate Bond,Issuer 025,Financials,A,IG,50307387.0,49885202.0,5.663,Fixed,-24008.0,27.973,-24008.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0106,Bond,Corporate Bond,Issuer 026,Energy,BBB,IG,31048672.0,30566330.0,2.094,Fixed,-6007.0,5.827,-6007.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0107,Bond,Corporate Bond,Issuer 027,Information Technology,BBB,IG,139360191.0,143710909.0,10.865,Fixed,-116831.0,74.22,-116831.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0108,Bond,Corporate Bond,Issuer 028,Information Technology,BB,HY,80620157.0,76205693.0,7.299,Fixed,-45322.0,41.318,-45322.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0109,Bond,Corporate Bond,Issuer 029,Consumer Discretionary,BBB,IG,36489491.0,35518559.0,6.969,Fixed,-20339.0,38.517,-20339.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0110,Bond,Corporate Bond,Issuer 030,Financials,BBB,IG,25142037.0,25816616.0,2.524,Fixed,-6039.0,7.81,-6039.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0111,Bond,Corporate Bond,Issuer 031,Health Care,A,IG,59692989.0,61241605.0,6.108,Fixed,-31419.0,31.451,-31419.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0112,Bond,Corporate Bond,Issuer 032,Materials,BBB,IG,18396720.0,18279279.0,6.634,Fixed,-10049.0,35.722,-10049.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0113,Bond,Corporate Bond,Issuer 033,Industrials,BBB,IG,59051535.0,56051693.0,5.847,Fixed,-27715.0,29.393,-27715.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0114,Bond,Corporate Bond,Issuer 034,Materials,A,IG,117934352.0,120115585.0,2.199,Fixed,-24712.0,6.29,-24712.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0115,Bond,Corporate Bond,Issuer 035,Consumer Discretionary,BB,HY,27092384.0,27771168.0,8.801,Fixed,-19194.0,54.682,-19194.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0116,Bond,Corporate Bond,Issuer 036,Communication Services,A,IG,16931131.0,16271753.0,9.962,Fixed,-12384.0,65.538,-12384.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0117,Bond,Corporate Bond,Issuer 037,Information Technology,BBB,IG,27148543.0,26022998.0,3.427,Fixed,-8053.0,12.672,-8053.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0118,Bond,Corporate Bond,Issuer 038,Consumer Staples,BBB,IG,16689632.0,17047698.0,6.154,Fixed,-8801.0,31.818,-8801.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0119,Bond,Sovereign Bond,Sovereign 01,Sovereign,AAA,Sovereign,56516789.0,53409811.0,1.079,Fixed,-5572.0,2.132,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0120,Bond,Sovereign Bond,Sovereign 02,Sovereign,AAA,Sovereign,144200286.0,142480506.0,5.901,Fixed,-71005.0,29.819,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0121,Bond,Sovereign Bond,Sovereign 03,Sovereign,AAA,Sovereign,136474447.0,132333196.0,16.184,Fixed,-142996.0,127.57,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0122,Bond,Sovereign Bond,Sovereign 04,Sovereign,AAA,Sovereign,188749093.0,193524307.0,7.107,Fixed,-112611.0,39.679,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0123,Bond,Sovereign Bond,Sovereign 05,Sovereign,AAA,Sovereign,86039997.0,83526549.0,16.631,Fixed,-91924.0,132.123,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0124,Bond,Sovereign Bond,Sovereign 06,Sovereign,AAA,Sovereign,112859791.0,116336565.0,5.859,Fixed,-57624.0,29.488,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0125,Bond,Sovereign Bond,Sovereign 07,Sovereign,AAA,Sovereign,82374848.0,82098749.0,15.396,Fixed,-85757.0,119.556,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0126,Bond,Sovereign Bond,Sovereign 08,Sovereign,AAA,Sovereign,65081242.0,62250310.0,2.943,Fixed,-16774.0,9.956,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0127,Derivative,Interest Rate Swap (pay fixed),Dealer 01,Financials,A,IG,275151519.0,-4822277.0,8.218,Fixed,203502.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0128,Derivative,Interest Rate Swap (receive fixed),Dealer 02,Financials,A,IG,318912993.0,-33459.0,5.481,Fixed,-157317.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0129,Derivative,Interest Rate Swap (receive fixed),Dealer 03,Financials,A,IG,207778858.0,1445295.0,4.174,Fixed,-78057.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0130,Derivative,Interest Rate Swap (receive fixed),Dealer 04,Financials,A,IG,250460301.0,-2701790.0,2.63,Fixed,-59276.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0131,Derivative,Interest Rate Swap (pay fixed),Dealer 05,Financials,A,IG,63344392.0,-179692.0,3.777,Fixed,21535.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0132,Derivative,Interest Rate Swap (receive fixed),Dealer 06,Financials,A,IG,101092944.0,826678.0,4.839,Fixed,-44031.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0133,Derivative,Interest Rate Swap (pay fixed),Dealer 07,Financials,A,IG,80632530.0,425695.0,4.378,Fixed,31772.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0134,Derivative,Interest Rate Swap (pay fixed),Dealer 08,Financials,A,IG,170798973.0,2441020.0,7.097,Fixed,109091.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0135,Derivative,Interest Rate Swap (pay fixed),Dealer 09,Financials,A,IG,394203358.0,1206108.0,9.459,Fixed,335574.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0136,Derivative,Interest Rate Swap (receive fixed),Dealer 10,Financials,A,IG,196164086.0,-815293.0,2.36,Fixed,-41666.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0137,Derivative,FX Forward,Dealer 11,Financials,A,IG,202914137.0,781374.0,1.189,0.0,0.0,0.0,0.0,0.0,-2029141.0,0.0,0.0,0.0,0.0
+P0138,Derivative,FX Forward,Dealer 12,Financials,A,IG,118955345.0,239691.0,0.271,0.0,0.0,0.0,0.0,0.0,-1189553.0,0.0,0.0,0.0,0.0
+P0139,Derivative,FX Forward,Dealer 13,Financials,A,IG,191950076.0,1507074.0,0.865,0.0,0.0,0.0,0.0,0.0,-1919501.0,0.0,0.0,0.0,0.0
+P0140,Derivative,FX Forward,Dealer 14,Financials,A,IG,56229442.0,205078.0,0.968,0.0,0.0,0.0,0.0,0.0,-562294.0,0.0,0.0,0.0,0.0
+P0141,Derivative,FX Forward,Dealer 15,Financials,A,IG,55810387.0,-104405.0,0.452,0.0,0.0,0.0,0.0,0.0,-558104.0,0.0,0.0,0.0,0.0
+P0142,Derivative,FX Forward,Dealer 16,Financials,A,IG,63892528.0,313236.0,0.286,0.0,0.0,0.0,0.0,0.0,-638925.0,0.0,0.0,0.0,0.0
+P0143,Derivative,Equity Total Return Swap,Dealer 17,Financials,A,IG,113609491.0,954285.0,1.602,0.0,0.0,0.0,0.0,1136095.0,0.0,0.0,0.0,0.0,0.0
+P0144,Derivative,Equity Total Return Swap,Dealer 18,Financials,A,IG,59847686.0,-867959.0,0.95,0.0,0.0,0.0,0.0,598477.0,0.0,0.0,0.0,0.0,0.0
+P0145,Derivative,Equity Total Return Swap,Dealer 19,Financials,A,IG,101575215.0,-460081.0,1.776,0.0,0.0,0.0,0.0,1015752.0,0.0,0.0,0.0,0.0,0.0
+P0146,Derivative,Equity Total Return Swap,Dealer 20,Financials,A,IG,48261800.0,502669.0,1.225,0.0,0.0,0.0,0.0,482618.0,0.0,0.0,0.0,0.0,0.0
+P0147,Derivative,Commodity Swap (oil),Dealer 21,Energy,BBB,IG,29239367.0,-13177.0,0.593,0.0,0.0,0.0,0.0,0.0,0.0,292394.0,0.0,0.0,0.0
+P0148,Derivative,Commodity Swap (oil),Dealer 22,Energy,BBB,IG,18498601.0,1355.0,1.892,0.0,0.0,0.0,0.0,0.0,0.0,184986.0,0.0,0.0,0.0
+P0149,Derivative,Commodity Swap (oil),Dealer 23,Energy,BBB,IG,45867519.0,256668.0,2.137,0.0,0.0,0.0,0.0,0.0,0.0,458675.0,0.0,0.0,0.0
+P0150,Derivative,Credit Default Swap (protection sold),Dealer 24,Energy,BBB,IG,47986470.0,-492623.0,5.0,0.0,0.0,0.0,-21594.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0151,Derivative,Credit Default Swap (protection sold),Dealer 25,Communication Services,BBB,IG,47710432.0,247018.0,5.0,0.0,0.0,0.0,-21470.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0152,Derivative,Credit Default Swap (protection bought),Dealer 26,Utilities,BB,HY,39064290.0,-295746.0,5.0,0.0,0.0,0.0,17579.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0153,Derivative,Credit Default Swap (protection sold),Dealer 27,Health Care,BB,HY,81370625.0,490287.0,5.0,0.0,0.0,0.0,-36617.0,0.0,0.0,0.0,0.0,0.0,0.0
+P0154,Derivative,Credit Default Swap (protection bought),Dealer 28,Real Estate,BB,HY,63552705.0,-411927.0,5.0,0.0,0.0,0.0,28599.0,0.0,0.0,0.0,0.0,0.0,0.0
