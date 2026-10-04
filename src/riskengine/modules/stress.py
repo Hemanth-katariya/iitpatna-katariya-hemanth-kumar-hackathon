@@ -85,8 +85,17 @@ SCENARIOS: dict[str, Scenario] = {
         rates_bp=-20, ig_spread_bp=60, hy_spread_bp=350, equity_pct=-8, oil_pct=-50, pd_multiplier=1.2,
         sector_pd_multiplier={"Energy": 3.0, "Materials": 1.5, "Industrials": 1.2},
     ),
+    "Market Sell-off": Scenario(
+        "Broad market sell-off",
+        "Market-wide news turns sharply negative: equities fall hard, credit spreads widen and investors move into government bonds.",
+        rates_bp=-40, ig_spread_bp=120, hy_spread_bp=450, equity_pct=-25, usd_pct=3, oil_pct=-20, pd_multiplier=1.8,
+        sector_pd_multiplier={"Consumer Discretionary": 1.3, "Energy": 1.3, "Industrials": 1.2},
+    ),
 }  # fmt: skip
-SYSTEMIC_EVENTS = tuple(SCENARIOS)
+SYSTEMIC_EVENTS = ("Geopolitical", "Macroeconomic", "Credit Event", "Commodity/Energy")
+SELL_OFF = "Market Sell-off"
+MIN_EVENT_CONFIDENCE = 0.6  # ignore event labels the classifier is unsure of
+ADVERSE_SENTIMENT = -0.2  # stress tests respond to bad news only
 FOCUS_SECTOR_MULTIPLIER = 1.5  # extra default stress on the sector the triggering news concentrates on
 
 
@@ -157,12 +166,18 @@ def detect_triggers(
     min_signals: int = MIN_SIGNALS,
     cooldown_days: int = COOLDOWN_DAYS,
 ) -> pd.DataFrame:
-    """Find days on which a systemic event type clusters above the impact threshold.
+    """Find days on which adverse, high-impact signals of one systemic kind cluster.
 
+    A signal counts when it is adverse, scores at or above the impact threshold, and is either
+    a confidently classified systemic event or negative market-wide commentary (a sell-off).
     Returns one row per trigger: date, event_type, impact (mean of the three strongest signals),
     severity, n_signals, focus_sector (set when the news concentrates on one sector) and headlines.
     """
-    hot = signals[(signals["impact"] >= threshold) & signals["event_type"].isin(SYSTEMIC_EVENTS)].copy()
+    hot = signals[(signals["impact"] >= threshold) & (signals["sentiment"] <= ADVERSE_SENTIMENT)].copy()
+    systemic = hot["event_type"].isin(SYSTEMIC_EVENTS) & (hot["event_conf"] >= MIN_EVENT_CONFIDENCE)
+    sell_off = (hot["ticker"] == MARKET) & (hot["event_type"] == "Market Commentary")
+    hot.loc[sell_off, "event_type"] = SELL_OFF
+    hot = hot[systemic | sell_off]
     hot["date"] = hot["ts"].str[:10]
     rows, last_fired = [], {}
     for (date, event), g in hot.groupby(["date", "event_type"]):

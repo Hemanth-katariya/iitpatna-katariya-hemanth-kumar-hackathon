@@ -22,13 +22,33 @@ class AttentionTracker:
     of attention, and a stream reports a neutral 1.0 until it has `min_history` days behind it.
     """
 
-    def __init__(self, window: int = 20, min_history: int = 5):
-        self.window, self.min_history = window, min_history
+    def __init__(self, window: int = 20, min_history: int = 5, share_of_voice: tuple[str, ...] = ("social",)):
+        self.window, self.min_history, self.share_of_voice = window, min_history, set(share_of_voice)
         self._history: dict[tuple[str, str], deque[float]] = defaultdict(lambda: deque(maxlen=window))
+        self._totals: dict[str, deque[float]] = defaultdict(lambda: deque(maxlen=window))
         self._sources_seen: dict[str, int] = defaultdict(int)  # days observed per source
+
+    def _share_adjusted(self, counts: dict[tuple[str, str], float]) -> dict[tuple[str, str], float]:
+        """Rescale share-of-voice sources so a day's total equals that source's trailing mean total.
+
+        How many social posts a collector captures on a given day says more about the collector
+        than about the market, so for those sources only a ticker's share of the day is kept.
+        """
+        totals: dict[str, float] = defaultdict(float)
+        for (_, source), n in counts.items():
+            totals[source] += n
+        adjusted = dict(counts)
+        for source in self.share_of_voice & set(totals):
+            past = self._totals[source]
+            if past:
+                scale = (sum(past) / len(past)) / totals[source]
+                adjusted.update({k: n * scale for k, n in counts.items() if k[1] == source})
+            past.append(totals[source])
+        return adjusted
 
     def update(self, counts: dict[tuple[str, str], float]) -> dict[tuple[str, str], float]:
         """Record one day of counts keyed by (ticker, source); return each stream's attention ratio."""
+        counts = self._share_adjusted(counts)
         ratios = {}
         for key, n in counts.items():
             hist = self._history[key]
@@ -38,9 +58,12 @@ class AttentionTracker:
                 # Days on which the stream was silent count as zero volume.
                 mean = sum(hist) / min(self._sources_seen[key[1]], self.window)
                 ratios[key] = (n + 1.0) / (mean + 1.0)
+        # A stream is silent (zero) only on days its source delivered something; a feed outage is not silence.
+        active = {s for _, s in counts}
         for key in set(self._history) | set(counts):
-            self._history[key].append(counts.get(key, 0.0))
-        for source in {s for _, s in counts}:
+            if key[1] in active:
+                self._history[key].append(counts.get(key, 0.0))
+        for source in active:
             self._sources_seen[source] += 1
         return ratios
 

@@ -1,0 +1,55 @@
+{
+  "target": "abs. cumulative abnormal return over [t, t+1] / (sqrt(2) x trailing 60d volatility)",
+  "train": "2015-2018 headlines",
+  "test": "2019 headlines (out-of-time)",
+  "company": {
+    "n_train": 16296,
+    "n_test": 5969,
+    "spearman_vs_two_day_move": {
+      "impact_model": 0.2886,
+      "naive_abs_sentiment": 0.0898,
+      "gradient_boosting": 0.2859
+    },
+    "spearman_vs_next_day_move": {
+      "impact_model": 0.1638,
+      "naive_abs_sentiment": 0.0381
+    },
+    "mean_sigma_move": {
+      "all": 1.048,
+      "top_decile_by_impact": 2.728,
+      "bottom_half_by_impact": 0.699
+    },
+    "share_scored_above_7": 0.105,
+    "big_move_rate": {
+      "base_rate": 0.1277,
+      "when_impact_above_7": 0.4848
+    },
+    "mean_sigma_move_by_score_band": {
+      "1-3": 0.694,
+      "3-5": 0.914,
+      "5-7": 1.259,
+      "7-10": 2.673
+    },
+    "per_stock_day": {
+      "n_stock_days": 3877,
+      "spearman_vs_two_day_move": 0.1467,
+      "spearman_vs_next_day_move": 0.0975,
+      "share_above_7": 0.0444,
+      "big_move_rate": {
+        "base_rate": 0.0774,
+        "when_impact_above_7": 0.3837
+      },
+      "mean_sigma_move": {
+        "impact_above_7": 2.159,
+        "impact_7_or_below": 0.773
+      }
+    }
+  },
+  "market": {
+    "n_train": 6834,
+    "n_test": 3768,
+    "status": "not validated: coefficients transferred from the single-name model",
+    "separate_market_fit_spearman_2019": -0.0129,
+    "transferred_model_spearman_2019": -0.0369
+  }
+}

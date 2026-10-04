@@ -105,7 +105,7 @@ def stress_triggers() -> list[dict]:
 
 @app.get("/stress/run")
 def stress_run(
-    event_type: str = Query(..., description=" | ".join(stress.SYSTEMIC_EVENTS)),
+    event_type: str = Query(..., description=" | ".join(stress.SCENARIOS)),
     impact: float = Query(..., ge=1, le=10),
     focus_sector: str | None = None,
 ) -> dict:

@@ -183,7 +183,9 @@ def explain(row: pd.Series) -> None:
             )
         )  # fmt: skip
         fig = T.style(fig, 240, legend=False, x_title=f"Contribution to the expected price move (total {d.sum():.2f} sigma)")
-        fig.update_layout(hovermode="closest", margin=dict(l=120, r=48))
+        span = max(abs(d.values).max(), 0.1)
+        fig.update_layout(hovermode="closest", margin=dict(l=120, r=24))
+        fig.update_xaxes(range=[min(d.values.min(), 0) - 0.18 * span, max(d.values.max(), 0) + 0.18 * span])
         fig.update_yaxes(showgrid=False)
         st.plotly_chart(fig, **CHART)
 
@@ -251,6 +253,8 @@ def page_rebalancer(sig: pd.DataFrame) -> None:
         fig = go.Figure()
         for (name, c), color in zip(curves.items(), T.SERIES):
             fig.add_trace(go.Scatter(x=c.index, y=c.values, name=name, mode="lines", line=dict(width=2, color=color), hovertemplate="%{y:.1f}"))
+        # Direct-label the two ends that differ; the tilted and equal-weight lines finish too close to label both.
+        for c in (curves["Sentiment-tilted index"], curves["S&P 500 (SPY)"]):
             fig.add_annotation(x=c.index[-1], y=c.iloc[-1], text=f"{c.iloc[-1]:.0f}", showarrow=False, xanchor="left", xshift=6, font=dict(color=T.INK_2, size=12))
         fig = T.style(fig, 360, y_title="Index level (start = 100)")
         fig.update_layout(margin=dict(r=48))
@@ -270,7 +274,7 @@ def page_rebalancer(sig: pd.DataFrame) -> None:
                 )  # fmt: skip
         fig = T.style(fig, 360, y_title="Share of index")
         fig.update_yaxes(tickformat=".0%", range=[0, 1])
-        fig.update_layout(legend=dict(font=dict(size=11)))
+        fig.update_layout(legend=dict(orientation="v", x=1.02, y=1, yanchor="top", traceorder="reversed", font=dict(size=11)), margin=dict(t=16, r=8))
         st.plotly_chart(fig, **CHART)
 
     st.markdown("**How far each stock's weight sits from its equal weight**")
@@ -309,13 +313,14 @@ def page_rebalancer(sig: pd.DataFrame) -> None:
         st.plotly_chart(fig, **CHART)
     with right:
         st.markdown("**Backtest summary**")
-        rows = {"Sentiment-tilted index": s, "Naive rebalancer (raw daily sentiment, no limits)": n, "Equal-weight index": e, "S&P 500 (SPY)": m["spy"]}
+        rows = {"Sentiment-tilted": s, "Naive rule": n, "Equal weight": e, "S&P 500": m["spy"]}
         summary = pd.DataFrame(rows).T[["total_return", "annualised_vol", "sharpe", "max_drawdown", "avg_daily_turnover"]]
         st.dataframe(
             summary.style.format({"total_return": "{:+.1%}", "annualised_vol": "{:.1%}", "sharpe": "{:.2f}", "max_drawdown": "{:.1%}", "avg_daily_turnover": "{:.1%}"}, na_rep="-"),
             use_container_width=True,
-            column_config={"total_return": "Return", "annualised_vol": "Volatility", "sharpe": "Sharpe", "max_drawdown": "Max drawdown", "avg_daily_turnover": "Daily turnover"},
+            column_config={"total_return": "Return", "annualised_vol": "Vol", "sharpe": "Sharpe", "max_drawdown": "Drawdown", "avg_daily_turnover": "Turnover"},
         )
+        st.caption("Naive rule: weights follow raw same-day sentiment with no smoothing or limits.")
         q = m["signal_quality"]
         st.markdown(
             f"**Does sentiment predict returns?** Daily rank correlation between a stock's sentiment and the return it goes on to earn: "
@@ -341,7 +346,7 @@ def page_stress(sig: pd.DataFrame) -> None:
             st.info(f"No trigger yet: the engine has not seen {stress.MIN_SIGNALS} or more systemic signals with impact {stress.TRIGGER_IMPACT:.0f}+ on one day. Try the what-if mode.")
             return
         st.markdown(f"**{len(triggers)} stress tests triggered** (rule: {stress.MIN_SIGNALS}+ signals of a systemic event type with impact {stress.TRIGGER_IMPACT:.0f}+ on one day)")
-        show = triggers.assign(headline=triggers["headlines"].str[0], severity=triggers["severity"] * 100).drop(columns="headlines")
+        show = triggers.assign(headline=triggers["headlines"].str[0], severity=triggers["severity"] * 100, focus_sector=triggers["focus_sector"].fillna("Broad market")).drop(columns="headlines")
         picked = st.dataframe(
             show, use_container_width=True, hide_index=True, height=min(38 * len(show) + 40, 250), on_select="rerun", selection_mode="single-row",
             column_config={
@@ -390,23 +395,23 @@ def page_stress(sig: pd.DataFrame) -> None:
             )
         )  # fmt: skip
         fig = T.style(fig, 320, legend=False, x_title="Profit or loss, $m (red = loss)")
-        fig.update_layout(hovermode="closest", margin=dict(l=150, r=56))
+        span = max(abs(f.values).max() / 1e6, 1.0)
+        fig.update_layout(hovermode="closest", margin=dict(l=150, r=24))
         fig.update_yaxes(showgrid=False, autorange="reversed")
-        fig.update_xaxes(showgrid=True)
+        fig.update_xaxes(showgrid=True, range=[min(f.values.min() / 1e6, 0) - 0.2 * span, max(f.values.max() / 1e6, 0) + 0.2 * span])
         st.plotly_chart(fig, **CHART)
     with right:
         st.markdown("**Value before and after, by asset class**")
-        g = stressed.groupby("asset_class")[["market_value_usd", "stressed_value_usd"]].sum() / 1e6
+        g = stressed.groupby("asset_class")[["market_value_usd", "stressed_value_usd", "pnl_total"]].sum() / 1e6
         g = g.loc[[a for a in ("Loan", "Bond", "Derivative") if a in g.index]]
-        fig = go.Figure(
-            [
-                go.Bar(x=g.index, y=g["market_value_usd"], name="Before", marker_color=T.GRAY, hovertemplate="%{y:,.0f}m"),
-                go.Bar(x=g.index, y=g["stressed_value_usd"], name="After stress", marker_color=T.BLUE, hovertemplate="%{y:,.0f}m"),
-            ]
+        g.loc["Total"] = g.sum()
+        g["pct"] = g["pnl_total"] / g["market_value_usd"].where(g["market_value_usd"].abs() > 50)
+        st.dataframe(
+            g.style.format({"market_value_usd": "{:,.0f}", "stressed_value_usd": "{:,.0f}", "pnl_total": "{:+,.1f}", "pct": "{:+.2%}"}, na_rep="n/a"),
+            use_container_width=True,
+            column_config={"asset_class": "Asset class", "market_value_usd": "Before $m", "stressed_value_usd": "After $m", "pnl_total": "Change $m", "pct": "Change %"},
         )
-        fig = T.style(fig, 320, y_title="Value, $m")
-        fig.update_layout(barmode="group", bargroupgap=0.08)
-        st.plotly_chart(fig, **CHART)
+        st.caption("Loans lose value through higher expected credit loss; bonds and derivatives are marked to market. Derivatives carry little market value, so their change is shown in dollars only.")
 
     left, right = st.columns(2)
     with left:
@@ -425,14 +430,13 @@ def page_stress(sig: pd.DataFrame) -> None:
         st.plotly_chart(fig, **CHART)
     with right:
         st.markdown("**Ten largest position losses**")
-        worst = stressed.nsmallest(10, "pnl_total")[["position_id", "instrument", "sector", "rating", "market_value_usd", "pnl_total"]]
-        worst = worst.assign(market_value_usd=worst["market_value_usd"] / 1e6, pnl_total=worst["pnl_total"] / 1e6)
+        worst = stressed.nsmallest(10, "pnl_total")[["pnl_total", "instrument", "sector", "rating", "position_id"]]
+        worst = worst.assign(pnl_total=worst["pnl_total"] / 1e6)
         st.dataframe(
             worst, use_container_width=True, hide_index=True, height=400,
             column_config={
-                "position_id": "Position", "instrument": "Instrument", "sector": "Sector", "rating": "Rating",
-                "market_value_usd": st.column_config.NumberColumn("Value $m", format="%.1f"),
                 "pnl_total": st.column_config.NumberColumn("Loss $m", format="%.1f"),
+                "instrument": "Instrument", "sector": "Sector", "rating": "Rating", "position_id": "Position",
             },
         )  # fmt: skip
     st.caption("All positions and counterparties are synthetic. The stress model is a simplified sensitivity-based revaluation, not a regulatory stress test.")
@@ -459,17 +463,31 @@ def page_validation() -> None:
             st.caption("Credit Event is excluded here because its labels come from a rule, not from human annotation.")
     if impact:
         st.markdown("**Impact score: do higher scores precede bigger price moves?** (2019 headlines, not used in fitting)")
-        cols = st.columns(2)
-        for col, scope, title in zip(cols, ("company", "market"), ("Single-company signals", "Market-wide signals")):
-            with col:
-                bands = impact[scope]["mean_sigma_move_by_score_band"]
-                fig = go.Figure(go.Bar(x=list(bands), y=list(bands.values()), marker_color=T.BLUE, text=[f"{v:.2f}" for v in bands.values()], textposition="outside", textfont=dict(color=T.INK_2), hovertemplate="score %{x}: %{y:.2f} sigma<extra></extra>"))
-                fig = T.style(fig, 300, legend=False, x_title="Impact score band", y_title="Mean abnormal move (sigma)")
-                fig.update_xaxes(type="category")
-                st.markdown(f"*{title}* ({impact[scope]['n_test']:,} signals)")
-                st.plotly_chart(fig, **CHART)
-                sp = impact[scope]["spearman_vs_two_day_move"]
-                st.caption(f"Rank correlation with the realised move: {sp['impact_model']:+.3f} for the impact model, {sp['naive_abs_sentiment']:+.3f} for sentiment strength alone.")
+        c, day = impact["company"], impact["company"]["per_stock_day"]
+        left, right = st.columns([1.2, 1])
+        with left:
+            bands = c["mean_sigma_move_by_score_band"]
+            fig = go.Figure(go.Bar(x=list(bands), y=list(bands.values()), marker_color=T.BLUE, text=[f"{v:.2f}" for v in bands.values()], textposition="outside", textfont=dict(color=T.INK_2), hovertemplate="score %{x}: %{y:.2f} sigma<extra></extra>"))
+            fig = T.style(fig, 300, legend=False, x_title="Impact score band", y_title="Mean abnormal move (sigma)")
+            fig.update_xaxes(type="category")
+            st.markdown(f"*Single-company signals* ({c['n_test']:,} signals)")
+            st.plotly_chart(fig, **CHART)
+        with right:
+            st.markdown("*Per stock and day (the conservative view)*")
+            a, b = st.columns(2)
+            a.metric("Big move, impact above 7", f"{day['big_move_rate']['when_impact_above_7']:.0%}", help="Share of stock-days with an abnormal move above two sigma when the day's strongest signal scored above 7.")
+            b.metric("Big move, any day", f"{day['big_move_rate']['base_rate']:.0%}")
+            sp = c["spearman_vs_two_day_move"]
+            st.markdown(
+                f"Rank correlation with the realised move, per signal: **{sp['impact_model']:+.2f}** for the impact model, "
+                f"**{sp['naive_abs_sentiment']:+.2f}** for sentiment strength alone. Per stock-day it is {day['spearman_vs_two_day_move']:+.2f}, "
+                f"and {day['spearman_vs_next_day_move']:+.2f} against the next day's move only."
+            )
+        st.warning(
+            "Market-wide impact is not validated. A separate fit on market-level headlines showed no relationship with S&P 500 moves in 2019 "
+            f"(rank correlation {impact['market']['separate_market_fit_spearman_2019']:+.2f}), so market-wide text reuses the single-company coefficients. "
+            "The public headline set is stock commentary, not a macro newswire."
+        )
 
 
 def _versus(values: dict[str, float]) -> None:

@@ -10,6 +10,7 @@ Writes models/impact_model.json and docs/metrics/impact.json.
 from __future__ import annotations
 
 import json
+from dataclasses import replace
 
 import numpy as np
 import pandas as pd
@@ -82,8 +83,6 @@ def fit_scope(train: pd.DataFrame) -> ScopeModel:
     reg = Ridge(alpha=1.0).fit(x, train["sigma_move"].clip(upper=TARGET_CLIP))
     coef = dict(zip(names, reg.coef_))
     event = {e: float(coef.get(e, 0.0)) for e in EVENT_TYPES}
-    raw = reg.predict(x)
-    breakpoints = np.maximum.accumulate(np.quantile(raw, SCORE_QUANTILES) + np.arange(10) * 1e-9)
     return ScopeModel(
         baseline=float(reg.intercept_),
         event=event,
@@ -91,8 +90,28 @@ def fit_scope(train: pd.DataFrame) -> ScopeModel:
         negative_tone=float(coef["negative_tone"]),
         positive_tone=float(coef["positive_tone"]),
         attention=float(coef["attention"]),
-        breakpoints=[float(b) for b in breakpoints],
+        breakpoints=breakpoints(reg.predict(x)),
     )
+
+
+def breakpoints(raw: np.ndarray) -> list[float]:
+    """Raw-score values that map to scores 1..10, strictly increasing."""
+    return [float(b) for b in np.maximum.accumulate(np.quantile(raw, SCORE_QUANTILES) + np.arange(10) * 1e-9)]
+
+
+def per_stock_day(scope: ScopeModel, test: pd.DataFrame) -> dict:
+    """The conservative view: one observation per stock and day (its strongest signal), not per headline."""
+    t = test.assign(impact=[scope.to_score(r) for r in raw_scores(scope, test)])
+    d = t.groupby(["ts", "ticker"]).agg(impact=("impact", "max"), y=("sigma_move", "first"), y_next=("sigma_next", "first"))
+    high = d["impact"] > 7
+    return {
+        "n_stock_days": int(len(d)),
+        "spearman_vs_two_day_move": round(float(spearmanr(d["impact"], d["y"]).statistic), 4),
+        "spearman_vs_next_day_move": round(float(spearmanr(d["impact"], d["y_next"]).statistic), 4),
+        "share_above_7": round(float(high.mean()), 4),
+        "big_move_rate": {"base_rate": round(float((d["y"] > BIG_MOVE).mean()), 4), "when_impact_above_7": round(float((d.loc[high, "y"] > BIG_MOVE).mean()), 4)},
+        "mean_sigma_move": {"impact_above_7": round(float(d.loc[high, "y"].mean()), 3), "impact_7_or_below": round(float(d.loc[~high, "y"].mean()), 3)},
+    }
 
 
 def raw_scores(scope: ScopeModel, df: pd.DataFrame) -> np.ndarray:
@@ -143,15 +162,28 @@ def main() -> None:
     df = add_targets(add_attention(df))
     print(f"calibration signals with price targets: {len(df):,}")
 
-    scopes, metrics = {}, {}
-    for name, part in (("company", df[df.ticker != MARKET]), ("market", df[df.ticker == MARKET])):
-        train, test = part[part.ts < TEST_START], part[part.ts >= TEST_START]
-        scopes[name] = fit_scope(train)
-        metrics[name] = {"n_train": int(len(train)), **evaluate(scopes[name], train, test)}
-        print(f"\n[{name}] " + json.dumps(metrics[name], indent=2))
-        print(json.dumps({k: round(v, 3) for k, v in scopes[name].event.items()}), f"neg={scopes[name].negative_tone:.3f} pos={scopes[name].positive_tone:.3f} att={scopes[name].attention:.3f} base={scopes[name].baseline:.3f}")
+    company, market = df[df.ticker != MARKET], df[df.ticker == MARKET]
+    train, test = company[company.ts < TEST_START], company[company.ts >= TEST_START]
+    scope = fit_scope(train)
+    metrics = {"company": {"n_train": int(len(train)), **evaluate(scope, train, test), "per_stock_day": per_stock_day(scope, test)}}
+    print("[company] " + json.dumps(metrics["company"], indent=2))
+    print(json.dumps({k: round(v, 3) for k, v in scope.event.items()}), f"neg={scope.negative_tone:.3f} pos={scope.positive_tone:.3f} att={scope.attention:.3f} base={scope.baseline:.3f}")
 
-    ImpactModel(**scopes).save()
+    # Market-wide text reuses the single-name coefficients, re-scaled to its own score distribution.
+    # A separate market fit does not validate on this stock-centric corpus; the check is recorded below.
+    m_train, m_test = market[market.ts < TEST_START], market[market.ts >= TEST_START]
+    market_scope = replace(scope, breakpoints=breakpoints(raw_scores(scope, m_train)))
+    own_fit = evaluate(fit_scope(m_train), m_train, m_test)
+    metrics["market"] = {
+        "n_train": int(len(m_train)),
+        "n_test": int(len(m_test)),
+        "status": "not validated: coefficients transferred from the single-name model",
+        "separate_market_fit_spearman_2019": own_fit["spearman_vs_two_day_move"]["impact_model"],
+        "transferred_model_spearman_2019": round(float(spearmanr(raw_scores(scope, m_test), m_test["sigma_move"]).statistic), 4),
+    }
+    print("[market] " + json.dumps(metrics["market"], indent=2))
+
+    ImpactModel(company=scope, market=market_scope).save()
     out = ROOT / "docs" / "metrics"
     out.mkdir(parents=True, exist_ok=True)
     (out / "impact.json").write_text(

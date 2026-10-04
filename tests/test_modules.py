@@ -56,6 +56,30 @@ def test_new_source_does_not_look_like_a_burst():
     assert tracker.update({("AAPL", "news"): 4.0, ("AAPL", "social"): 500.0})[("AAPL", "social")] == 1.0
 
 
+def test_feed_outage_is_not_mistaken_for_silence():
+    tracker = AttentionTracker(min_history=5)
+    both = {("AAPL", "news"): 4.0, ("AAPL", "social"): 30.0, ("MSFT", "social"): 10.0}
+    for _ in range(8):
+        tracker.update(both)
+    for _ in range(15):  # the social feed goes down; news keeps flowing
+        tracker.update({("AAPL", "news"): 4.0})
+    back = tracker.update(both)
+    assert back[("AAPL", "social")] == pytest.approx(1.0)
+
+
+def test_social_attention_uses_share_of_voice_not_raw_volume():
+    tracker = AttentionTracker(min_history=5)
+    day = {("AAPL", "social"): 30.0, ("MSFT", "social"): 10.0}
+    for _ in range(6):
+        tracker.update(day)
+    # The collector captures ten times more posts for every ticker: no one's share changed.
+    flood = tracker.update({k: n * 10 for k, n in day.items()})
+    assert flood[("AAPL", "social")] == pytest.approx(1.0)
+    # AAPL takes most of an ordinary day's volume: that is attention.
+    shift = tracker.update({("AAPL", "social"): 39.0, ("MSFT", "social"): 1.0})
+    assert shift[("AAPL", "social")] > 1.2 and shift[("MSFT", "social")] < 0.5
+
+
 def _scope() -> ScopeModel:
     return ScopeModel(
         baseline=1.0, event={"Credit Event": 0.5}, source={"news": 0.0, "social": -0.1},
@@ -172,3 +196,17 @@ def test_triggers_need_a_cluster_of_systemic_high_impact_signals():
     assert trig[["date", "event_type"]].values.tolist() == [["2020-03-09", "Geopolitical"], ["2020-03-20", "Geopolitical"]]
     assert trig.iloc[0]["impact"] == pytest.approx(8.5)
     assert trig.iloc[0]["focus_sector"] is None
+
+
+def test_triggers_ignore_good_news_and_unsure_labels_and_detect_sell_offs():
+    def rows(n, tag, **kw):
+        return [_signal(doc_id=f"{tag}{i}", ts="2020-03-09T00:00:00Z", ticker=MARKET, sector="Market", impact=8.0, **kw).to_dict() for i in range(n)]
+
+    df = pd.DataFrame(
+        rows(4, "good", event_type="Commodity/Energy", sentiment=0.7)  # oil rebounding is not a stress event
+        + rows(4, "unsure", event_type="Macroeconomic", event_conf=0.4)
+        + rows(4, "selloff", event_type="Market Commentary", sentiment=-0.9)
+    )
+    trig = stress.detect_triggers(df)
+    assert trig["event_type"].tolist() == [stress.SELL_OFF]
+    assert stress.SELL_OFF in stress.SCENARIOS
