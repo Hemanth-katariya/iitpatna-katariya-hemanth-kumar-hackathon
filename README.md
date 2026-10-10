@@ -3,7 +3,7 @@
 **Candidate Name:** Katariya Hemanth Kumar
 **College Email ID:** hemanth_2301cs22@iitp.ac.in
 **College / Campus:** Indian Institute of Technology Patna
-**Demo Video Link:** [YouTube / Unlisted]
+**Demo Video Link:** [https://youtu.be/3NrrLFpfWEQ](https://youtu.be/3NrrLFpfWEQ) (YouTube, unlisted)
 **Slide Deck:** [docs/presentation.pdf](docs/presentation.pdf)
 
 ## 1. Project Overview / Problem Statement & Approach
