@@ -6,6 +6,7 @@ hash. scripts/prescore.py fills the cache in parallel shards; the engine then re
 from __future__ import annotations
 
 import hashlib
+import threading
 from pathlib import Path
 
 import pandas as pd
@@ -35,18 +36,23 @@ class TextScorer:
     def __init__(self, sentiment: FinBertSentiment | None = None, events: EventClassifier | None = None, cache_dir: Path | None = CACHE_DIR):
         self._sentiment, self._events = sentiment, events
         self.cache = load_cache(cache_dir) if cache_dir else {}
+        self._load_lock = threading.Lock()
 
-    # Models load lazily: a fully cached replay never needs them.
+    # Models load lazily: a fully cached replay never needs them. The lock matters because the
+    # dashboard and API share one scorer across threads, and two threads importing transformers
+    # for the first time at once fail with "cannot import name".
     @property
     def sentiment(self) -> FinBertSentiment:
-        if self._sentiment is None:
-            self._sentiment = FinBertSentiment()
+        with self._load_lock:
+            if self._sentiment is None:
+                self._sentiment = FinBertSentiment()
         return self._sentiment
 
     @property
     def events(self) -> EventClassifier:
-        if self._events is None:
-            self._events = EventClassifier()
+        with self._load_lock:
+            if self._events is None:
+                self._events = EventClassifier()
         return self._events
 
     def score(self, texts: list[str]) -> list[tuple[Sentiment, Event]]:
